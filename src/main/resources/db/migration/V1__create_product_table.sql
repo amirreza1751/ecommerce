@@ -4,7 +4,8 @@ CREATE TABLE products (
     name VARCHAR(200) NOT NULL,
     description TEXT,
     price NUMERIC(12, 2) NOT NULL CHECK (price >= 0),
-    currency CHAR(3) NOT NULL,
+    currency VARCHAR(3) NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+

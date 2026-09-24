@@ -44,6 +44,14 @@ public class Product {
     protected Product() {
     }
 
+    public Product(String sku, String name, String description, BigDecimal price, String currency) {
+        this.sku = sku;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.currency = currency;
+    }
+
     @PrePersist
     protected void onCreate() {
         OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
@@ -108,6 +116,7 @@ public class Product {
         return updatedAt;
     }
 }
+
 
 
 

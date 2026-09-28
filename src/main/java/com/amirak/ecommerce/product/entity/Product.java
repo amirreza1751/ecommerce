@@ -44,12 +44,37 @@ public class Product {
     protected Product() {
     }
 
-    public Product(String sku, String name, String description, BigDecimal price, String currency) {
+    public static Product create(String sku, String name, String description,
+                                  BigDecimal price, String currency) {
+        Product product = new Product();
+        product.updateDetails(sku, name, description, price, currency);
+        return product;
+    }
+
+    public void updateDetails(String sku, String name, String description,
+                              BigDecimal price, String currency) {
+        validate(sku, name, price, currency);
         this.sku = sku;
         this.name = name;
         this.description = description;
         this.price = price;
         this.currency = currency;
+    }
+
+    private static void validate(String sku, String name, BigDecimal price, String currency) {
+        if (sku == null || sku.isBlank() || sku.length() > 64) {
+            throw new IllegalArgumentException("SKU must contain 1 to 64 characters");
+        }
+        if (name == null || name.isBlank() || name.length() > 200) {
+            throw new IllegalArgumentException("Name must contain 1 to 200 characters");
+        }
+        if (price == null || price.signum() < 0 || price.scale() > 2
+                || price.precision() - price.scale() > 10) {
+            throw new IllegalArgumentException("Price must be non-negative with at most 10 integer and 2 decimal digits");
+        }
+        if (currency == null || !currency.matches("[A-Z]{3}")) {
+            throw new IllegalArgumentException("Currency must be a three-letter uppercase code");
+        }
     }
 
     @PrePersist
@@ -72,40 +97,20 @@ public class Product {
         return sku;
     }
 
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
     public String getCurrency() {
         return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
     }
 
     public OffsetDateTime getCreatedAt() {
@@ -116,8 +121,3 @@ public class Product {
         return updatedAt;
     }
 }
-
-
-
-
-

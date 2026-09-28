@@ -42,7 +42,7 @@ public class ProductService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "SKU already exists");
         }
 
-        Product product = new Product(request.sku(), request.name(), request.description(), request.price(), request.currency());
+        Product product = Product.create(request.sku(), request.name(), request.description(), request.price(), request.currency());
         return toResponse(products.save(product));
     }
 
@@ -52,11 +52,7 @@ public class ProductService {
         if (products.existsBySkuAndIdNot(request.sku(), id)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "SKU already exists");
         }
-        product.setSku(request.sku());
-        product.setName(request.name());
-        product.setDescription(request.description());
-        product.setPrice(request.price());
-        product.setCurrency(request.currency());
+        product.updateDetails(request.sku(), request.name(), request.description(), request.price(), request.currency());
         return toResponse(products.save(product));
     }
 
@@ -82,5 +78,4 @@ public class ProductService {
                 product.getUpdatedAt());
     }
 }
-
 
